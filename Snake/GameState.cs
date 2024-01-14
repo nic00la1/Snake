@@ -19,6 +19,8 @@
             Grid = new GridValue[rows, cols];
             Dir = Direction.Right;
 
+            AddSnake();
+            AddFood();
         }
 
         private void AddSnake()
@@ -32,5 +34,33 @@
             }
         }
 
+        private IEnumerable<Position> EmptyPositions()
+        {
+            for (int r = 0; r < Rows; r++) // loop through rows
+            {
+                for (int c = 0; c < Cols; c++) // loop through columns
+                {
+                    if (Grid[r, c] == GridValue.Empty) // if grid value is empty
+                    {
+                        yield return new Position(r, c); // return position
+                    }
+                }
+            }
+        }
+
+        private void AddFood()
+        {
+            List<Position> empty = new List<Position>(EmptyPositions()); // get empty positions
+
+            if (empty.Count == 0) // if no empty positions
+            {
+                return;
+            }
+
+            Position pos = empty[random.Next(empty.Count)]; // get random position
+            Grid[pos.Row, pos.Col] = GridValue.Food; // set food value in grid
+
+
+        }
     }
 }
