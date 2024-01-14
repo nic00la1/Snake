@@ -21,6 +21,16 @@
 
         }
 
+        private void AddSnake()
+        {
+            int r = Rows / 2; // get middle row
+
+            for (int c = 1; c <= 3; c++) // loop 3 times
+            {
+                Grid[r, c] = GridValue.Snake; // set snake value in grid
+                snakePositions.AddFirst(new Position(r, c)); // add position to linked list
+            }
+        }
 
     }
 }
