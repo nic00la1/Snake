@@ -95,6 +95,47 @@
             Dir = dir; // set direction
         }
 
+        private bool OutsideGrid(Position pos)
+        {
+            return pos.Row < 0 || pos.Row >= Rows || pos.Col < 0 || pos.Col >= Cols; // return true if position is outside grid
+        }
 
+        private GridValue WillHit(Position newHeadPos)
+        {
+            if (OutsideGrid(newHeadPos)) // if outside grid
+            {
+                return GridValue.Outside; // return outside value
+            }
+
+            if (newHeadPos == TailPosition()) // if new head position is tail position
+            {
+                return GridValue.Empty; // return snake value
+            }
+
+            return Grid[newHeadPos.Row, newHeadPos.Col]; // return grid value at position
+        }
+
+        public void Move()
+        {
+            Position newHeadPos = HeadPosition().Translate(Dir); // get new head position
+            GridValue hit = WillHit(newHeadPos); // get grid value at new head position
+
+            if (hit != GridValue.Outside || hit == GridValue.Snake)
+            {
+                GameOver = true; // set game over to true
+                return;
+            }
+            else if (hit == GridValue.Empty)
+            {
+                RemoveTail();
+                AddHead(newHeadPos);
+            }
+            else if (hit == GridValue.Food)
+            {
+                AddHead(newHeadPos);
+                Score++;
+                AddFood();
+            }
+        }
     }
 }
