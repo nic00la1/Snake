@@ -60,7 +60,41 @@
             Position pos = empty[random.Next(empty.Count)]; // get random position
             Grid[pos.Row, pos.Col] = GridValue.Food; // set food value in grid
 
-
         }
+
+        public Position HeadPosition()
+        {
+            return snakePositions.First.Value; // return first position in linked list
+        }
+
+        public Position TailPosition()
+        {
+            return snakePositions.Last.Value; // return last position in linked list
+        }
+
+        public IEnumerable<Position> SnakePositions()
+        {
+            return snakePositions; // return linked list
+        }
+
+        private void AddHead(Position pos)
+        {
+            snakePositions.AddFirst(pos); // add position to linked list
+            Grid[pos.Row, pos.Col] = GridValue.Snake; // set snake value in grid
+        }
+
+        private void RemoveTail()
+        {
+            Position pos = snakePositions.Last.Value; // get last position in linked list
+            Grid[pos.Row, pos.Col] = GridValue.Empty; // set empty value in grid
+            snakePositions.RemoveLast(); // remove last position from linked list
+        }
+
+        public void ChangeDirection(Direction dir)
+        {
+            Dir = dir; // set direction
+        }
+
+
     }
 }
