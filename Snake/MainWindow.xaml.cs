@@ -33,6 +33,7 @@ namespace Snake
         private async Task RunGame()
         {
             Draw();
+            await ShowCountDown();
             Overlay.Visibility = Visibility.Hidden;
             await GameLoop();
         }
@@ -128,6 +129,15 @@ namespace Snake
                     GridValue gridVal = gameState.Grid[r, c]; // C# 9.0
                     gridImages[r, c].Source = gridValToImage[gridVal]; // C# 9.0
                 }
+            }
+        }
+
+        private async Task ShowCountDown()
+        {
+            for (int i = 3; i >= 1; i--)
+            {
+                OverlayText.Text = i.ToString();
+                await Task.Delay(500);
             }
         }
     }
