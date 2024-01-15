@@ -9,6 +9,7 @@
         public int Score { get; private set; }
         public bool GameOver { get; private set; }
 
+        private readonly LinkedList<Direction> dirChanges = new LinkedList<Direction>();
         private readonly LinkedList<Position> snakePositions = new LinkedList<Position>(); // private field to store snake positions
         private readonly Random random = new Random(); // private field to generate random numbers
 
@@ -89,9 +90,34 @@
             snakePositions.RemoveLast(); // remove last position from linked list
         }
 
+        private Direction GetLastDirection()
+        {
+            if (dirChanges.Count == 0) // if no direction changes
+            {
+                return Dir; // return current direction
+            }
+
+            return dirChanges.Last.Value; // return last direction change
+        }
+
+        private bool CanChangeDirection(Direction newDir)
+        {
+            if (dirChanges.Count == 2)
+            {
+                return false; // return false if 2 direction changes
+            }
+
+            Direction lastDir = GetLastDirection(); // get last direction
+            return newDir != lastDir && newDir != lastDir.Opposite(); // return true if new direction is not last direction and not opposite of last direction
+        }
+
         public void ChangeDirection(Direction dir)
         {
-            Dir = dir; // set direction
+            if (CanChangeDirection(dir))
+            {
+                dirChanges.AddLast(dir);
+
+            }
         }
 
         private bool OutsideGrid(Position pos)
@@ -116,6 +142,12 @@
 
         public void Move()
         {
+            if (dirChanges.Count > 0) // if direction changes
+            {
+                Dir = dirChanges.First.Value; // set direction to first direction change
+                dirChanges.RemoveFirst(); // remove first direction change
+            }
+
             Position newHeadPos = HeadPosition().Translate(Dir); // get new head position
             GridValue hit = WillHit(newHeadPos); // get grid value at new head position
 
