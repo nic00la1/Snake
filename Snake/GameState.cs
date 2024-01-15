@@ -59,7 +59,6 @@
 
             Position pos = empty[random.Next(empty.Count)]; // get random position
             Grid[pos.Row, pos.Col] = GridValue.Food; // set food value in grid
-
         }
 
         public Position HeadPosition()
@@ -85,8 +84,8 @@
 
         private void RemoveTail()
         {
-            Position pos = snakePositions.Last.Value; // get last position in linked list
-            Grid[pos.Row, pos.Col] = GridValue.Empty; // set empty value in grid
+            Position tail = snakePositions.Last.Value; // get last position in linked list
+            Grid[tail.Row, tail.Col] = GridValue.Empty; // set empty value in grid
             snakePositions.RemoveLast(); // remove last position from linked list
         }
 
@@ -120,7 +119,9 @@
             Position newHeadPos = HeadPosition().Translate(Dir); // get new head position
             GridValue hit = WillHit(newHeadPos); // get grid value at new head position
 
-            if (hit != GridValue.Outside || hit == GridValue.Snake)
+            Console.WriteLine($"New Head Position: ({newHeadPos.Row}, {newHeadPos.Col}), Hit: {hit}");
+
+            if (hit == GridValue.Outside || hit == GridValue.Snake) // PRZEZ TEN BLAD SIEDZIALAM 2 GODZINY (hit == GridValue.Empty) musi byc zamiast (hit != GridValue.Empty)
             {
                 GameOver = true; // set game over to true
                 return;

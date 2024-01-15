@@ -12,7 +12,8 @@
         WindowStartupLocation="CenterScreen"
         Icon="Assets/icon.ico"
         Loaded="Window_Loaded"
-        KeyDown="Window_KeyDown">
+        KeyDown="Window_KeyDown"
+        Focusable="True">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
